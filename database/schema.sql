@@ -2,7 +2,7 @@
 
 -- Tabla de clubes
 CREATE TABLE dev.clubs (
-    id SERIAL PRIMARY KEY,
+    id uuid PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     logo VARCHAR(255),
     address VARCHAR(255),
@@ -20,7 +20,7 @@ CREATE TABLE dev.clubs (
 
 -- Tabla de raquetas
 CREATE TABLE dev.rackets (
-    id SERIAL PRIMARY KEY,
+    id uuid PRIMARY KEY,
     brand VARCHAR(100) NOT NULL,
     model VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -29,7 +29,7 @@ CREATE TABLE dev.rackets (
 
 -- Tabla de jugadores
 CREATE TABLE dev.players (
-    id SERIAL PRIMARY KEY,
+    id uuid PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     phone VARCHAR(20) NOT NULL,
     gender VARCHAR(10) CHECK (gender IN ('male', 'female', 'other')),
@@ -46,22 +46,22 @@ CREATE TABLE dev.players (
     matches_consecutive_wins_max INTEGER DEFAULT 0,
     postal_code VARCHAR(10),
     postal_code_visible BOOLEAN DEFAULT true,
-    club_id INTEGER REFERENCES dev.clubs(id),
-    racket_id INTEGER REFERENCES dev.rackets(id),
+    club_id uuid REFERENCES dev.clubs(id),
+    racket_id uuid REFERENCES dev.rackets(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabla de partidos
 CREATE TABLE dev.matches (
-    id SERIAL PRIMARY KEY,
+    id uuid PRIMARY KEY,
     is_result_validated BOOLEAN DEFAULT false,
     played_on TIMESTAMP,
-    created_by_id INTEGER REFERENCES dev.players(id),
-    reported_by_id INTEGER REFERENCES dev.players(id),
+    created_by_id uuid REFERENCES dev.players(id),
+    reported_by_id uuid REFERENCES dev.players(id),
     reported_by_team_id INTEGER,
-    validated_by_id INTEGER REFERENCES dev.players(id),
-    club_id INTEGER REFERENCES dev.clubs(id),
+    validated_by_id uuid REFERENCES dev.players(id),
+    club_id uuid REFERENCES dev.clubs(id),
     result JSONB,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -69,11 +69,11 @@ CREATE TABLE dev.matches (
 
 -- Tabla de relación entre jugadores y partidos
 CREATE TABLE dev.match_players (
-    id SERIAL PRIMARY KEY,
-    match_id INTEGER REFERENCES dev.matches(id) ON DELETE CASCADE,
-    player_id INTEGER REFERENCES dev.players(id) ON DELETE CASCADE,
+    id uuid PRIMARY KEY,
+    match_id uuid REFERENCES dev.matches(id) ON DELETE CASCADE,
+    player_id uuid REFERENCES dev.players(id) ON DELETE CASCADE,
     team_id INTEGER NOT NULL,
-    history_id INTEGER,
+    history_id uuid,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (match_id, player_id)
@@ -81,7 +81,7 @@ CREATE TABLE dev.match_players (
 
 -- Tabla de eventos
 CREATE TABLE dev.events (
-    id SERIAL PRIMARY KEY,
+    id uuid PRIMARY KEY,
     type VARCHAR(50) NOT NULL,
     title VARCHAR(255) NOT NULL,
     description TEXT,
@@ -91,16 +91,16 @@ CREATE TABLE dev.events (
     registration_end_date TIMESTAMP,
     price DECIMAL(10, 2),
     available_slots INTEGER,
-    club_id INTEGER REFERENCES dev.clubs(id),
+    club_id uuid REFERENCES dev.clubs(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabla de participantes en eventos
 CREATE TABLE dev.event_participants (
-    id SERIAL PRIMARY KEY,
-    event_id INTEGER REFERENCES dev.events(id) ON DELETE CASCADE,
-    player_id INTEGER REFERENCES dev.players(id) ON DELETE CASCADE,
+    id uuid PRIMARY KEY,
+    event_id uuid REFERENCES dev.events(id) ON DELETE CASCADE,
+    player_id uuid REFERENCES dev.players(id) ON DELETE CASCADE,
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status VARCHAR(20) DEFAULT 'registered',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -110,13 +110,13 @@ CREATE TABLE dev.event_participants (
 
 -- Tabla de administradores
 CREATE TABLE dev.admins (
-    id SERIAL PRIMARY KEY,
+    id uuid PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
-    club_id INTEGER REFERENCES dev.clubs(id),
+    club_id uuid REFERENCES dev.clubs(id),
     is_super_admin BOOLEAN DEFAULT false,
     last_login TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
