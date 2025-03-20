@@ -1,7 +1,7 @@
 -- Esquema de base de datos para la aplicación de gestión de clubes de pádel
 
 -- Tabla de clubes
-CREATE TABLE clubs (
+CREATE TABLE dev.clubs (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     logo VARCHAR(255),
@@ -19,7 +19,7 @@ CREATE TABLE clubs (
 );
 
 -- Tabla de raquetas
-CREATE TABLE rackets (
+CREATE TABLE dev.rackets (
     id SERIAL PRIMARY KEY,
     brand VARCHAR(100) NOT NULL,
     model VARCHAR(100) NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE rackets (
 );
 
 -- Tabla de jugadores
-CREATE TABLE players (
+CREATE TABLE dev.players (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     phone VARCHAR(20) NOT NULL,
@@ -53,25 +53,25 @@ CREATE TABLE players (
 );
 
 -- Tabla de partidos
-CREATE TABLE matches (
+CREATE TABLE dev.matches (
     id SERIAL PRIMARY KEY,
     is_result_validated BOOLEAN DEFAULT false,
     played_on TIMESTAMP,
-    created_by_id INTEGER REFERENCES players(id),
-    reported_by_id INTEGER REFERENCES players(id),
+    created_by_id INTEGER REFERENCES dev.players(id),
+    reported_by_id INTEGER REFERENCES dev.players(id),
     reported_by_team_id INTEGER,
-    validated_by_id INTEGER REFERENCES players(id),
-    club_id INTEGER REFERENCES clubs(id),
+    validated_by_id INTEGER REFERENCES dev.players(id),
+    club_id INTEGER REFERENCES dev.clubs(id),
     result JSONB,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabla de relación entre jugadores y partidos
-CREATE TABLE match_players (
+CREATE TABLE dev.match_players (
     id SERIAL PRIMARY KEY,
-    match_id INTEGER REFERENCES matches(id) ON DELETE CASCADE,
-    player_id INTEGER REFERENCES players(id) ON DELETE CASCADE,
+    match_id INTEGER REFERENCES dev.matches(id) ON DELETE CASCADE,
+    player_id INTEGER REFERENCES dev.players(id) ON DELETE CASCADE,
     team_id INTEGER NOT NULL,
     history_id INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -80,7 +80,7 @@ CREATE TABLE match_players (
 );
 
 -- Tabla de eventos
-CREATE TABLE events (
+CREATE TABLE dev.events (
     id SERIAL PRIMARY KEY,
     type VARCHAR(50) NOT NULL,
     title VARCHAR(255) NOT NULL,
@@ -97,10 +97,10 @@ CREATE TABLE events (
 );
 
 -- Tabla de participantes en eventos
-CREATE TABLE event_participants (
+CREATE TABLE dev.event_participants (
     id SERIAL PRIMARY KEY,
-    event_id INTEGER REFERENCES events(id) ON DELETE CASCADE,
-    player_id INTEGER REFERENCES players(id) ON DELETE CASCADE,
+    event_id INTEGER REFERENCES dev.events(id) ON DELETE CASCADE,
+    player_id INTEGER REFERENCES dev.players(id) ON DELETE CASCADE,
     registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status VARCHAR(20) DEFAULT 'registered',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -109,7 +109,7 @@ CREATE TABLE event_participants (
 );
 
 -- Tabla de administradores
-CREATE TABLE admins (
+CREATE TABLE dev.admins (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
@@ -124,10 +124,10 @@ CREATE TABLE admins (
 );
 
 -- Índices para mejorar el rendimiento
-CREATE INDEX idx_players_club ON players(club_id);
-CREATE INDEX idx_matches_club ON matches(club_id);
-CREATE INDEX idx_match_players_match ON match_players(match_id);
-CREATE INDEX idx_match_players_player ON match_players(player_id);
-CREATE INDEX idx_events_club ON events(club_id);
-CREATE INDEX idx_event_participants_event ON event_participants(event_id);
-CREATE INDEX idx_event_participants_player ON event_participants(player_id);
+CREATE INDEX idx_players_club ON dev.players(club_id);
+CREATE INDEX idx_matches_club ON dev.matches(club_id);
+CREATE INDEX idx_match_players_match ON dev.match_players(match_id);
+CREATE INDEX idx_match_players_player ON dev.match_players(player_id);
+CREATE INDEX idx_events_club ON dev.events(club_id);
+CREATE INDEX idx_event_participants_event ON dev.event_participants(event_id);
+CREATE INDEX idx_event_participants_player ON dev.event_participants(player_id);
