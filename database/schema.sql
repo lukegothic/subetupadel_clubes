@@ -46,8 +46,8 @@ CREATE TABLE dev.players (
     matches_consecutive_wins_max INTEGER DEFAULT 0,
     postal_code VARCHAR(10),
     postal_code_visible BOOLEAN DEFAULT true,
-    club_id INTEGER REFERENCES clubs(id),
-    racket_id INTEGER REFERENCES rackets(id),
+    club_id INTEGER REFERENCES dev.clubs(id),
+    racket_id INTEGER REFERENCES dev.rackets(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -91,7 +91,7 @@ CREATE TABLE dev.events (
     registration_end_date TIMESTAMP,
     price DECIMAL(10, 2),
     available_slots INTEGER,
-    club_id INTEGER REFERENCES clubs(id),
+    club_id INTEGER REFERENCES dev.clubs(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -116,7 +116,7 @@ CREATE TABLE dev.admins (
     email VARCHAR(100) NOT NULL UNIQUE,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
-    club_id INTEGER REFERENCES clubs(id),
+    club_id INTEGER REFERENCES dev.clubs(id),
     is_super_admin BOOLEAN DEFAULT false,
     last_login TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
