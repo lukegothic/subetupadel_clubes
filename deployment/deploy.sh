@@ -29,7 +29,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Configuración
-APP_NAME="padel-app"
+APP_NAME="stp-clubes"
 DOMAIN="subetupadel.com"
 APP_DIR="/var/www/$APP_NAME"
 BACKEND_DIR="$APP_DIR/backend"
