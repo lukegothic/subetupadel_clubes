@@ -30,13 +30,13 @@ fi
 
 # Configuración
 APP_NAME="padel-app"
-DOMAIN="your-domain.com"
+DOMAIN="subetupadel.com"
 APP_DIR="/var/www/$APP_NAME"
 BACKEND_DIR="$APP_DIR/backend"
 FRONTEND_DIR="$APP_DIR/frontend"
 NGINX_CONF="/etc/nginx/sites-available/$DOMAIN"
 NGINX_ENABLED="/etc/nginx/sites-enabled/$DOMAIN"
-GIT_REPO="your-git-repository-url"
+GIT_REPO="https://github.com/lukegothic/subetupadel_clubes.git"
 BRANCH="main"
 
 # Crear directorio de la aplicación si no existe
@@ -80,7 +80,11 @@ npm install --production
 # Construir frontend
 print_message "Construyendo frontend..."
 cd $FRONTEND_DIR
+print_message "Instalando dependencias del frontend..."
 npm install
+print_message "Verificando estructura del frontend..."
+ls -la
+print_message "Iniciando construcción del frontend..."
 npm run build
 
 # Configurar variables de entorno
