@@ -108,18 +108,9 @@ CORS_ORIGIN=https://$DOMAIN
 EOF
 fi
 
-# Configurar certificado SSL con Let's Encrypt
-print_message "Configurando certificado SSL con Let's Encrypt..."
-certbot --nginx -d $DOMAIN -d www.$DOMAIN --non-interactive --agree-tos --email admin@$DOMAIN
-
-# Configurar Nginx
-print_message "Configurando Nginx..."
-if [ -f "$APP_DIR/deployment/nginx.conf" ]; then
-  # Reemplazar el dominio en la configuración
-  sed "s/your-domain.com/$DOMAIN/g" $APP_DIR/deployment/nginx.conf > $NGINX_CONF
-else
-  print_warning "Archivo de configuración de Nginx no encontrado. Creando configuración básica..."
-  cat > $NGINX_CONF << EOF
+# Configurar Nginx inicialmente sin SSL
+print_message "Configurando Nginx inicialmente sin SSL..."
+cat > $NGINX_CONF << EOF
 server {
     listen 80;
     server_name $DOMAIN www.$DOMAIN;
@@ -140,7 +131,6 @@ server {
     }
 }
 EOF
-fi
 
 # Habilitar sitio en Nginx
 if [ ! -f "$NGINX_ENABLED" ]; then
@@ -148,15 +138,40 @@ if [ ! -f "$NGINX_ENABLED" ]; then
   ln -s $NGINX_CONF $NGINX_ENABLED
 fi
 
-# Verificar configuración de Nginx
-print_message "Verificando configuración de Nginx..."
+# Verificar configuración inicial de Nginx
+print_message "Verificando configuración inicial de Nginx..."
 nginx -t
 
 if [ $? -eq 0 ]; then
   print_message "Reiniciando Nginx..."
   systemctl restart nginx
 else
-  print_error "Error en la configuración de Nginx. Por favor, revise la configuración."
+  print_error "Error en la configuración inicial de Nginx. Por favor, revise la configuración."
+  exit 1
+fi
+
+# Configurar certificado SSL con Let's Encrypt
+print_message "Configurando certificado SSL con Let's Encrypt..."
+certbot --nginx -d $DOMAIN -d www.$DOMAIN --non-interactive --agree-tos --email admin@$DOMAIN
+
+# Configurar Nginx con SSL
+print_message "Configurando Nginx con SSL..."
+if [ -f "$APP_DIR/deployment/nginx.conf" ]; then
+  cp $APP_DIR/deployment/nginx.conf $NGINX_CONF
+else
+  print_error "Archivo de configuración de Nginx no encontrado."
+  exit 1
+fi
+
+# Verificar configuración final de Nginx
+print_message "Verificando configuración final de Nginx..."
+nginx -t
+
+if [ $? -eq 0 ]; then
+  print_message "Reiniciando Nginx..."
+  systemctl restart nginx
+else
+  print_error "Error en la configuración final de Nginx. Por favor, revise la configuración."
   exit 1
 fi
 
