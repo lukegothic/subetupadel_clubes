@@ -108,6 +108,10 @@ CORS_ORIGIN=https://$DOMAIN
 EOF
 fi
 
+# Configurar certificado SSL con Let's Encrypt
+print_message "Configurando certificado SSL con Let's Encrypt..."
+certbot --nginx -d $DOMAIN -d www.$DOMAIN --non-interactive --agree-tos --email admin@$DOMAIN
+
 # Configurar Nginx
 print_message "Configurando Nginx..."
 if [ -f "$APP_DIR/deployment/nginx.conf" ]; then
@@ -154,15 +158,6 @@ if [ $? -eq 0 ]; then
 else
   print_error "Error en la configuración de Nginx. Por favor, revise la configuración."
   exit 1
-fi
-
-# Configurar certificado SSL con Let's Encrypt
-print_message "¿Desea configurar SSL con Let's Encrypt? (y/n)"
-read -r configure_ssl
-
-if [ "$configure_ssl" = "y" ]; then
-  print_message "Configurando certificado SSL con Let's Encrypt..."
-  certbot --nginx -d $DOMAIN -d www.$DOMAIN
 fi
 
 # Iniciar aplicación con PM2
