@@ -14,7 +14,7 @@ const authMiddleware = async (req, res, next) => {
     const token = authHeader.split(' ')[1];
     
     // Verificar el token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'padel-app-secret');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'stp-clubes-secret');
     
     // Buscar el administrador en la base de datos
     const admin = await ClubAdmin.findByPk(decoded.id);

@@ -54,7 +54,7 @@ La aplicación de Gestión de Clubes de Pádel sigue una arquitectura cliente-se
 ## Estructura del Proyecto
 
 ```
-padel-app/
+stp-clubes/
 ├── backend/
 │   ├── src/
 │   │   ├── config/         # Configuración de la aplicación

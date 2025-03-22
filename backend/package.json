@@ -1,5 +1,5 @@
 {
-  "name": "padel-app-backend",
+  "name": "stp-clubes-backend",
   "version": "1.0.0",
   "description": "Backend para la aplicación de gestión de clubes de pádel",
   "main": "src/server.js",

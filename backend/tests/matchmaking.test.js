@@ -43,7 +43,7 @@ describe('Matchmaking API', () => {
     // Crear token JWT válido para pruebas
     authToken = jwt.sign(
       { id: '1', username: 'testuser', club_id: '1' },
-      process.env.JWT_SECRET || 'padel-app-secret',
+      process.env.JWT_SECRET || 'stp-clubes-secret',
       { expiresIn: '1h' }
     );
   });

@@ -22,7 +22,7 @@ print_error() {
 }
 
 # Configuración
-APP_NAME="padel-app"
+APP_NAME="stp-clubes"
 DEPLOY_DIR="./deploy"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 PACKAGE_NAME="${APP_NAME}_${TIMESTAMP}.zip"
@@ -131,7 +131,7 @@ La aplicación estará disponible en su dominio configurado.
 Si encuentra algún problema durante el despliegue, revise los siguientes logs:
 
 - Logs de Nginx: \`/var/log/nginx/error.log\`
-- Logs de la aplicación: \`/var/www/padel-app/backend/logs/\`
+- Logs de la aplicación: \`/var/www/stp-clubes/backend/logs/\`
 - Logs de PM2: \`pm2 logs\`
 
 ### Contacto

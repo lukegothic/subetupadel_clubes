@@ -134,14 +134,14 @@ sudo -u postgres psql -d padel_app -f /ruta/al/schema.sql
 Si está utilizando el paquete de despliegue:
 
 ```bash
-mkdir -p /var/www/padel-app
-unzip padel-app_package.zip -d /var/www/padel-app
+mkdir -p /var/www/stp-clubes
+unzip stp-clubes_package.zip -d /var/www/stp-clubes
 ```
 
 Si está clonando desde un repositorio Git:
 
 ```bash
-git clone https://url-del-repositorio.git /var/www/padel-app
+git clone https://url-del-repositorio.git /var/www/stp-clubes
 ```
 
 ### Paso 2: Configurar Variables de Entorno
@@ -149,7 +149,7 @@ git clone https://url-del-repositorio.git /var/www/padel-app
 Cree o edite el archivo `.env` en el directorio del backend:
 
 ```bash
-cd /var/www/padel-app/backend
+cd /var/www/stp-clubes/backend
 cp .env.production .env
 ```
 
@@ -167,7 +167,7 @@ Asegúrese de configurar correctamente:
 ### Paso 3: Instalar Dependencias del Backend
 
 ```bash
-cd /var/www/padel-app/backend
+cd /var/www/stp-clubes/backend
 npm install --production
 ```
 
@@ -176,7 +176,7 @@ npm install --production
 ### Paso 1: Instalar Dependencias del Frontend
 
 ```bash
-cd /var/www/padel-app/frontend
+cd /var/www/stp-clubes/frontend
 npm install
 ```
 
@@ -195,7 +195,7 @@ Esto creará una carpeta `dist` con los archivos estáticos optimizados.
 Cree un archivo de configuración para su sitio:
 
 ```bash
-sudo nano /etc/nginx/sites-available/padel-app
+sudo nano /etc/nginx/sites-available/stp-clubes
 ```
 
 Copie la configuración de Nginx proporcionada en el archivo `deployment/nginx.conf`, reemplazando `your-domain.com` con su dominio real.
@@ -203,7 +203,7 @@ Copie la configuración de Nginx proporcionada en el archivo `deployment/nginx.c
 ### Paso 2: Habilitar el Sitio
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/padel-app /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/stp-clubes /etc/nginx/sites-enabled/
 sudo nginx -t  # Verificar la configuración
 sudo systemctl restart nginx
 ```
@@ -233,7 +233,7 @@ sudo certbot renew --dry-run
 ### Paso 1: Iniciar el Backend con PM2
 
 ```bash
-cd /var/www/padel-app/backend
+cd /var/www/stp-clubes/backend
 pm2 start ecosystem.config.js --env production
 ```
 
@@ -288,7 +288,7 @@ pm2 logs
 Asegúrese de que las variables de entorno estén configuradas correctamente:
 
 ```bash
-cat /var/www/padel-app/backend/.env
+cat /var/www/stp-clubes/backend/.env
 ```
 
 ### Problema: Error de Conexión a la Base de Datos
@@ -338,8 +338,8 @@ sudo certbot renew
 Asegúrese de que los directorios tengan los permisos correctos:
 
 ```bash
-sudo chown -R $USER:$USER /var/www/padel-app
-sudo chmod -R 755 /var/www/padel-app
+sudo chown -R $USER:$USER /var/www/stp-clubes
+sudo chmod -R 755 /var/www/stp-clubes
 ```
 
 ---

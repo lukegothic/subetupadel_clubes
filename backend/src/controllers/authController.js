@@ -64,7 +64,7 @@ exports.register = async (req, res) => {
     // Generar token JWT
     const token = jwt.sign(
       { id: admin.id, username: admin.username, club_id: admin.club_id },
-      process.env.JWT_SECRET || 'padel-app-secret',
+      process.env.JWT_SECRET || 'stp-clubes-secret',
       { expiresIn: '24h' }
     );
     
@@ -118,7 +118,7 @@ exports.login = async (req, res) => {
     // Generar token JWT
     const token = jwt.sign(
       { id: admin.id, username: admin.username, club_id: admin.club_id },
-      process.env.JWT_SECRET || 'padel-app-secret',
+      process.env.JWT_SECRET || 'stp-clubes-secret',
       { expiresIn: '24h' }
     );
     

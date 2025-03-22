@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "padel-app-backend",
+      name: "stp-clubes-backend",
       script: "src/server.js",
       instances: "max",
       exec_mode: "cluster",
